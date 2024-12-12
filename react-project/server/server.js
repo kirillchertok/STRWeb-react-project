@@ -4,11 +4,17 @@ import mongoose from 'mongoose'
 import bodyParser from 'body-parser'
 import router from './router/router.js'
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 config()
 
 const app = express()
 const port = process.env.PORT || 5000
+
+app.use(cors({
+  origin: process.env.CLIENT_URL,
+  credentials: true,
+}));
 
 app.use(bodyParser.json())
 app.use(cookieParser())

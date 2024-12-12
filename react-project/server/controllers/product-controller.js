@@ -38,8 +38,8 @@ export default class ProductController{
     
     static async delete(req, res, next){
         try{
-            const { id } = req.body
-            const product = await ProductService.delete(id)
+            const { productId } = req.params
+            const product = await ProductService.delete(productId)
             if (!product) return res.status(500).json({message: 'Server error'})
             return res.json(product)
         }

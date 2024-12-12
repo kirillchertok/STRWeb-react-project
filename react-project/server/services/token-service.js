@@ -10,6 +10,11 @@ export default class TokenService{
         return token
     }
 
+    static async findToken (refreshToken) {
+        const tokenData = await tokenModel.findOne({ refreshToken });
+        return tokenData;
+    }
+
     static createTokens(id){
         const accessToken = jwt.sign({ id: id }, process.env.SECRET_KEY_ACCESS, { expiresIn: '1h' })
         const refreshToken = jwt.sign({ id: id }, process.env.SECRET_KEY_REFRESH, { expiresIn: '30d' })
@@ -37,7 +42,7 @@ export default class TokenService{
     }
 
     static async addToken(userId, refreshToken){
-        const token = await tokenModel.findOne({ userId: userId })
+        const token = await tokenModel.findOne({ userId: userId.toString() })
         if (token){
             token.refreshToken = refreshToken
             return token.save()

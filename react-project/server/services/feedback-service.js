@@ -1,4 +1,5 @@
 import feedbackModel from "../models/feedback-model.js"
+import userModel from "../models/user-model.js"
 
 export default class FeedbackService{
     static async getAll(){
@@ -6,9 +7,10 @@ export default class FeedbackService{
         return feedbacks
     }
 
-    static async create(userId, text, rate){
-        if (!userId || !text || !rate) return null 
-        const feedback = await feedbackModel.create({ userId: userId, rate: rate, text: text })
+    static async create(userLogin, text, rate){
+        if (!userLogin || !text || !rate) return null 
+
+        const feedback = await feedbackModel.create({ userLogin: userLogin, rate: rate, feedbackText: text })
         return feedback
     }
 }

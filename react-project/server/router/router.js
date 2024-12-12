@@ -10,11 +10,12 @@ router.post('/registration', UserController.registration)
 router.post('/login', UserController.login)
 router.post('/logout', UserController.logout)
 router.get('/refresh', UserController.refresh)
+router.get('/users', UserController.getUsers)
 
 router.get('/products', ProductController.get)
 router.post('/create-product', ProductController.create)
 router.put('/update-product', ProductController.update)
-router.delete('/delete-product', ProductController.delete)
+router.delete('/delete-product/:productId', ProductController.delete)
 
 router.get('/news', NewsController.get)
 router.post('/create-news', NewsController.create)

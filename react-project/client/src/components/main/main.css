@@ -1,0 +1,8 @@
+#main{
+    width: calc(100% - 2rem);
+    min-height: calc(100vh - 70px - 2rem);
+    padding: 1rem;
+    /* position: fixed;
+    z-index: 0; */
+    background: darkgray;
+}

@@ -10,10 +10,10 @@ export default class NewsService{
     static async create(title, text, authorId){
         if (!title || !text || !authorId) return null
 
-        const author = await userModel.findById(authorId)
-        if (!author) return null
+        const user = await userModel.findOne({login: authorId})
+        if(user.role !== 'admin') return null
 
-        const news = await newsModel.create({ title: title, text: text, author: author._id })
+        const news = await newsModel.create({ title: title, text: text, author: authorId })
         return news
     }
 }

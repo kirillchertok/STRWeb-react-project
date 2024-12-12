@@ -31,14 +31,14 @@ export default class UserService{
     static async registration(login, password, secondPassword, role){
         if (password !== secondPassword) return null
 
-        const hashedPassword = bcrypt.hash(password, 3)
+        const hashedPassword = await bcrypt.hash(password, 3)
         const newUser = await userModel.create({ login: login, password: hashedPassword, role: role })
         if (!newUser) return null
 
-        const tokens = await TokenService.createTokens(user._id)
-        await TokenService.addToken(user._id, tokens.refreshToken)
+        const tokens = await TokenService.createTokens(newUser._id)
+        await TokenService.addToken(newUser._id, tokens.refreshToken)
 
-        return { user, ...tokens }
+        return { newUser, ...tokens }
     }
 
     static async logout(id){
@@ -52,15 +52,18 @@ export default class UserService{
         return await TokenService.deleteToken(token.refreshToken)
     }
 
-    static async refresh(id){
-        if (!id) return null
+    static async refresh(refreshToken){
+        if (!refreshToken) return null
 
-        const token = await TokenService.getToken(id)
-        if (!token || !token.refreshToken) return null
+        const userData = TokenService.verifyRefreshToken(refreshToken);
+        const tokenFromDb = await TokenService.findToken(refreshToken);
+        if(!userData || !tokenFromDb) {
+            return null
+        }
+        const user = await userModel.findById(userData.id);
+        const tokens = await TokenService.createTokens(userData.id);
 
-        const tokens = await TokenService.createTokens(user._id)
         await TokenService.addToken(user._id, tokens.refreshToken)
-
-        return { user, ...tokens }
+        return {...tokens, user}
     }
 }

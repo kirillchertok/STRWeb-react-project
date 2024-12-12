@@ -14,8 +14,8 @@ export default class FeedbackController{
 
     static async create(req, res, next){
         try{
-            const { userId, text, rate } = req.body
-            const feedback = await FeedbackService.create(userId, text, rate)
+            const { userLogin, text, rate } = req.body
+            const feedback = await FeedbackService.create(userLogin, text, rate)
             if (!feedback) return res.status(500).json({message: 'Server error'})
             return res.json(feedback)
         }

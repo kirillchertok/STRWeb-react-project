@@ -15,6 +15,7 @@ export default class NewsController{
     static async create(req, res, next){
         try{
             const { title, text, authorId } = req.body
+            console.log(title, text, authorId)
             const news = await NewsService.create(title, text, authorId)
             if (!news) return res.status(500).json({message: 'Server error'})
             return res.json(news)
